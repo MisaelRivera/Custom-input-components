@@ -1,9 +1,11 @@
 <script setup>
-  import { ref } from 'vue';
+  import { reactive, ref } from 'vue';
   import { Card, Row, Col, Image } from 'ant-design-vue';
   import HelloWorld from './components/HelloWorld.vue'
   import CustomInput from './components/CustomInput.vue';
   import CustomSelect from './components/CustomSelect.vue';
+  import CustomCheckbox from './components/CustomCheckbox.vue';
+  import CustomRadioButton from './components/CustomRadioButton.vue';
   const age = ref(1);
   const options = [
     {
@@ -19,48 +21,51 @@
       label: 'Kitchen',
     },
   ];
-  const categories = ref(null);
+
+  const formState = reactive({
+    name: '',
+    category: null,
+    clean: false,
+    married: 0,
+  });
 </script>
 
 <template>
-  <HelloWorld />
   <Row>
     <Col :offset="6" :span="12">
-      <Card :body-style="{padding: 0}">
+      <Card>
           <Row>
-            <Col :span="12" class="bg-blue-600 px-0">
-              <Row>
-                <Col :span="16" :offset="4">
-                  <Image 
-                    :width="300"
-                    :height="300"
-                    src="https://aliyuncdn.antdv.com/vue.png"/>
-                </Col>
-              </Row>
-                <h1 class="text-white text-center">Ant design company</h1>
+            <Col :span="6">
+              <CustomInput 
+                label="Name"
+                v-model="formState.name"/>
             </Col>
-            <Col :span="12">
-              <div>
-                <CustomInput 
-                  label="Name"
-                  v-model="age"
-                  name="age"
-                  id="age"
-                  min="0.1"
-                  step="0.1"
-                  type="number"/>
-              </div>
-              <div>
-                <CustomSelect 
-                  label="Categories"
-                  v-model="categories"
-                  :options="[{value: null, label: 'Elije'}, ...options]"
-                  name="categories"/>
-              </div>
-              {{ categories }}
+            <Col :span="6">
+              <CustomSelect 
+                label="Categories"
+                :options="options"
+                v-model="formState.category"/>
+            </Col>
+            <Col :span="6">
+              <CustomCheckbox 
+                label="Clean"
+                v-model="formState.clean"/>
+            </Col>
+            <Col :span="6">
+              <CustomRadioButton 
+                label="Yes"
+                v-model="formState.married"
+                name="married"
+                :value="1"/>
+              <CustomRadioButton 
+                label="No"
+                v-model="formState.married"
+                name="married"
+                :value="0"/>
             </Col>
           </Row>
       </Card>
+      <p>{{ formState }}</p>
     </Col>
   </Row>
 </template>
